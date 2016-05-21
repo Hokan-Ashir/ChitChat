@@ -2,22 +2,16 @@ package ru.hokan.controllers;
 
 import com.tassta.test.chat.User;
 import com.tassta.test.chat.UserListModel;
-import javafx.event.EventHandler;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import ru.hokan.impl.UserImpl;
-import ru.hokan.util.I18N;
-
-import java.io.IOException;
+import ru.hokan.views.ViewsHolder;
 
 public class ContactListController {
 
@@ -29,76 +23,74 @@ public class ContactListController {
     private Accordion usersAccordion;
 
     @FXML
-    private TitledPane userPanel;
-
-    @FXML
-    private ImageView userImage;
-
-    @FXML
-    private Button sendMessageButton;
-
-    @FXML
-    private Button showHistoryButton;
-
-    @FXML
     public void initialize() {
-        attachShowMessageHistoryButtonListener();
-        attachSendMessageButtonListener();
-    }
+        usersAccordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
 
-    private void attachShowMessageHistoryButtonListener() {
-        showHistoryButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent event) {
-                showMessageHistoryView();
-            }
-
-            private void showMessageHistoryView() {
-                Parent root;
-                try {
-                    root = FXMLLoader.load(getClass().getClassLoader().getResource("messageHistory.fxml"));
-                    Stage stage = new Stage();
-                    stage.setTitle(I18N.INSTANCE.getMessage("message.history.window.caption"));
-                    stage.setScene(new Scene(root, 450, 300));
-                    stage.show();
-
-                    // TODO here you can hide current window and restore, after closing
-                    // current dialog, but it will only be nice, if you have per-one-dialog application
-                } catch (IOException e) {
-                    LOGGER.error(e.getMessage(), e);
+            public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldValue, TitledPane newValue) {
+                if (newValue == null) {
+                    return;
                 }
+
+                String userName = newValue.getText();
+                Parent view = ViewsHolder.INSTANCE.getView("contact.fxml");
+                if (newValue.equals(view)) {
+                    return;
+                }
+
+                TitledPane pane = (TitledPane) view;
+                setContactPaneAndExpand(newValue, pane);
+                pane.setText(userName);
+
+                ContactController controller = ViewsHolder.INSTANCE.getController("contact.fxml");
+                User user = getUserByName(userName);
+                controller.setUser(user);
+                controller.setUserIcon(user.getIcon());
             }
         });
     }
 
-    private void attachSendMessageButtonListener() {
-        sendMessageButton.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                showMessageDialogView();
+    private void setContactPaneAndExpand(TitledPane newValue, TitledPane pane) {
+        ObservableList<TitledPane> panes = usersAccordion.getPanes();
+        findAndReplaceOldContactPaneWithStubPane(pane, panes);
+
+        int i = panes.indexOf(newValue);
+        panes.set(i, pane);
+        panes.get(i).setExpanded(true);
+    }
+
+    private void findAndReplaceOldContactPaneWithStubPane(TitledPane pane, ObservableList<TitledPane> panes) {
+        for (int i = 0; i < panes.size(); ++i) {
+            TitledPane innerPane = panes.get(i);
+            String text = pane.getText();
+            if (innerPane.getText().equals(text)) {
+                TitledPane stubPane = new TitledPane();
+                stubPane.setText(text);
+                panes.set(i, stubPane);
+                break;
             }
+        }
+    }
 
-            private void showMessageDialogView() {
-                Parent root;
-                try {
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getClassLoader().getResource("messageDialog.fxml"));
-                    root = loader.load();
-                    Stage stage = new Stage();
-                    stage.setTitle(I18N.INSTANCE.getMessage("message.dialog.window.caption"));
-                    stage.setScene(new Scene(root, 450, 450));
-                    stage.show();
+    public void updateUserListWithModel(UserListModel userListModel) {
+        this.userListModel = userListModel;
+        ObservableList<TitledPane> panes = usersAccordion.getPanes();
+        panes.clear();
+        for (User user : userListModel.getUserList()) {
+            TitledPane pane = new TitledPane();
+            pane.setText(user.getName());
+            panes.add(pane);
+        }
+    }
 
-                    MessageDialogController controller = loader.getController();
-                    controller.setContactListController(ContactListController.this);
-
-                    // TODO here you can hide current window and restore, after closing
-                    // current dialog, but it will only be nice, if you have per-one-dialog application
-                } catch (IOException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
+    private User getUserByName(String userName) {
+        for (User user : userListModel.getUserList()) {
+            if (user.getName().equals(userName)) {
+                return user;
             }
-        });
+        }
+
+        return null;
     }
 
     public User getUser() {

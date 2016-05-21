@@ -17,7 +17,7 @@ public class MessageDialogController {
 
     private static final Logger LOGGER = Logger.getLogger(MessageDialogController.class);
 
-    private ContactListController contactListController;
+    private User user;
 
     @FXML
     private TextArea inputMessageTextArea;
@@ -52,7 +52,7 @@ public class MessageDialogController {
     }
 
     private void sendMessage(String text) {
-        User receiver = contactListController.getUser();
+        User receiver = user;
         try {
             IoManagerImpl.INSTANCE.sendMessage(receiver, text);
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class MessageDialogController {
         chatMessagesTextArea.setText(chatMessages);
     }
 
-    public void setContactListController(ContactListController contactListController) {
-        this.contactListController = contactListController;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

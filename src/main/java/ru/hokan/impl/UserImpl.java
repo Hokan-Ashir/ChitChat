@@ -14,7 +14,7 @@ public class UserImpl implements User {
         this.name = name;
         this.id = id;
         this.isOnline = isOnline;
-
+        setIcon(isOnline);
     }
 
     /**
@@ -51,9 +51,9 @@ public class UserImpl implements User {
 
     private void setIcon(boolean isOnline) {
         if (isOnline) {
-            icon = new Image("@icons/user_online.png");
+            icon = new Image("icons/user_online.png");
         } else {
-            icon = new Image("@icons/user_offline.png");
+            icon = new Image("icons/user_offline.png");
         }
     }
 }

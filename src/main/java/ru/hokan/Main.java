@@ -1,11 +1,13 @@
 package ru.hokan;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ru.hokan.controllers.ContactListController;
+import ru.hokan.impl.UserListModelImpl;
 import ru.hokan.util.I18N;
+import ru.hokan.views.ViewsHolder;
 
 import java.util.Locale;
 
@@ -20,12 +22,14 @@ public class Main extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ClassLoader classLoader = getClass().getClassLoader();
-        Parent root = FXMLLoader.load(classLoader.getResource("contactList.fxml"));
+        Parent root = ViewsHolder.INSTANCE.getView("contactList.fxml");
         I18N.INSTANCE.loadBundleMessages("messages", Locale.getDefault());
         primaryStage.setTitle(I18N.INSTANCE.getMessage("contact.list.window.caption"));
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
+
+        ContactListController controller = ViewsHolder.INSTANCE.getController("contactList.fxml");
+        controller.updateUserListWithModel(new UserListModelImpl());
     }
 }
 
