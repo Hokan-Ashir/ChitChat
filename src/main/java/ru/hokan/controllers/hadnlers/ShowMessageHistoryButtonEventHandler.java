@@ -1,19 +1,18 @@
 package ru.hokan.controllers.hadnlers;
 
+import com.tassta.test.chat.MessageHistory;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import org.apache.log4j.Logger;
+import ru.hokan.controllers.ContactController;
+import ru.hokan.controllers.MessageHistoryController;
+import ru.hokan.impl.MessageHistoryModelHolder;
 import ru.hokan.util.I18N;
-
-import java.io.IOException;
+import ru.hokan.views.ViewsHolder;
 
 public class ShowMessageHistoryButtonEventHandler implements EventHandler<MouseEvent> {
-
-    private static final Logger LOGGER = Logger.getLogger(ShowMessageHistoryButtonEventHandler.class);
 
     /**
      * {@inheritDoc}
@@ -24,18 +23,19 @@ public class ShowMessageHistoryButtonEventHandler implements EventHandler<MouseE
     }
 
     private void showMessageHistoryView() {
-        Parent root;
-        try {
-            root = FXMLLoader.load(getClass().getClassLoader().getResource("messageHistory.fxml"));
-            Stage stage = new Stage();
-            stage.setTitle(I18N.INSTANCE.getMessage("message.history.window.caption"));
-            stage.setScene(new Scene(root, 450, 300));
-            stage.show();
+        Parent root = ViewsHolder.INSTANCE.getView("messageHistory.fxml");
+        Stage stage = new Stage();
+        stage.setTitle(I18N.INSTANCE.getMessage("message.history.window.caption"));
+        Scene scene = new Scene(root, 450, 300);
+        stage.setScene(scene);
+        stage.show();
 
-            // TODO here you can hide current window and restore, after closing
-            // current dialog, but it will only be nice, if you have per-one-dialog application
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
+        ContactController contactController = ViewsHolder.INSTANCE.getController("contact.fxml");
+        MessageHistoryController controller = ViewsHolder.INSTANCE.getController("messageHistory.fxml");
+        MessageHistory messageHistory = MessageHistoryModelHolder.INSTANCE.getModel().getMessageHistory(contactController.getUser());
+        controller.updateHistoryWithModel(messageHistory);
+
+        // TODO here you can hide current window and restore, after closing
+        // current dialog, but it will only be nice, if you have per-one-dialog application
     }
 }

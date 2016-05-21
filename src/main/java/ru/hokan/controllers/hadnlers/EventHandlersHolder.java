@@ -10,7 +10,7 @@ public enum EventHandlersHolder {
 
     private Map<Class<? extends EventHandler>, EventHandler> handlers = new HashMap<Class<? extends EventHandler>, EventHandler>() {{
         put(SendMessageButtonEventHandler.class, new SendMessageButtonEventHandler());
-        put(ShowMessageHistoryButtonEventHandler.class, new SendMessageButtonEventHandler());
+        put(ShowMessageHistoryButtonEventHandler.class, new ShowMessageHistoryButtonEventHandler());
     }};
 
     public EventHandler getEventHandler(Class<? extends EventHandler> handlerClass) {

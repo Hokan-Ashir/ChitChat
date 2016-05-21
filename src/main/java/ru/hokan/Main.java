@@ -5,7 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ru.hokan.controllers.ContactListController;
-import ru.hokan.impl.UserListModelImpl;
+import ru.hokan.impl.UserListModelHolder;
 import ru.hokan.util.I18N;
 import ru.hokan.views.ViewsHolder;
 
@@ -29,7 +29,7 @@ public class Main extends Application {
         primaryStage.show();
 
         ContactListController controller = ViewsHolder.INSTANCE.getController("contactList.fxml");
-        controller.updateUserListWithModel(new UserListModelImpl());
+        controller.updateUserListWithModel(UserListModelHolder.INSTANCE.getModel());
     }
 }
 

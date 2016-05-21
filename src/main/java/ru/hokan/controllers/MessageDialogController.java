@@ -1,5 +1,7 @@
 package ru.hokan.controllers;
 
+import com.tassta.test.chat.Message;
+import com.tassta.test.chat.MessageHistory;
 import com.tassta.test.chat.User;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -9,6 +11,8 @@ import javafx.scene.input.KeyEvent;
 import org.apache.log4j.Logger;
 import ru.hokan.UserHolder;
 import ru.hokan.impl.IoManagerImpl;
+import ru.hokan.impl.MessageHistoryModelHolder;
+import ru.hokan.impl.MessageImpl;
 import ru.hokan.util.I18N;
 
 import java.util.Date;
@@ -47,6 +51,11 @@ public class MessageDialogController {
                 Date date = new Date();
                 updateChatMessagesText(text, date);
                 inputMessageTextArea.clear();
+
+                MessageHistory messageHistory = MessageHistoryModelHolder.INSTANCE.getModel().getMessageHistory(user);
+                User sender = UserHolder.INSTANCE.getUser();
+                Message message = new MessageImpl(date, text, sender, user);
+                messageHistory.getMessageList().add(message);
             }
         });
     }

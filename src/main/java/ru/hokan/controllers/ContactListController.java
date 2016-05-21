@@ -10,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
 import org.apache.log4j.Logger;
-import ru.hokan.impl.UserImpl;
 import ru.hokan.views.ViewsHolder;
 
 public class ContactListController {
@@ -91,9 +90,5 @@ public class ContactListController {
         }
 
         return null;
-    }
-
-    public User getUser() {
-        return new UserImpl("someName", 1, true);
     }
 }
