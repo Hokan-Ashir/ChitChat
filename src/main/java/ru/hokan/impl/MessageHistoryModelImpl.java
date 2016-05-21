@@ -9,17 +9,17 @@ import java.util.Map;
 
 public class MessageHistoryModelImpl implements MessageHistoryModel {
 
-    private Map<User, MessageHistory> historyMap = new HashMap<>();
+    private Map<Integer, MessageHistory> historyMap = new HashMap<>();
 
     /**
      * {@inheritDoc}
      */
     @Override
     public MessageHistory getMessageHistory(User user) {
-        MessageHistory history = historyMap.get(user);
+        MessageHistory history = historyMap.get(user.getId());
         if (history == null) {
             history = new MessageHistoryImpl();
-            historyMap.put(user, history);
+            historyMap.put(user.getId(), history);
         }
 
         return history;

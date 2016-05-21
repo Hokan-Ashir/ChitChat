@@ -9,12 +9,9 @@ import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.TitledPane;
-import org.apache.log4j.Logger;
 import ru.hokan.views.ViewsHolder;
 
 public class ContactListController {
-
-    private static final Logger LOGGER = Logger.getLogger(ContactListController.class);
 
     private UserListModel userListModel;
 

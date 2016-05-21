@@ -14,7 +14,7 @@ public class MessageHistoryController {
         messageHistory.clear();
         StringBuilder builder = new StringBuilder();
         for (Message message : historyModel.getMessageList()) {
-            builder.append(message.getSender().getName()).append(" (").append(message.getDate()).append("): ").append(message.getText());
+            builder.append(message.getSender().getName()).append(" (").append(message.getDate()).append("): ").append(message.getText()).append("\n");
         }
 
         messageHistory.setText(builder.toString());

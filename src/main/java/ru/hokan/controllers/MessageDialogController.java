@@ -78,5 +78,14 @@ public class MessageDialogController {
 
     public void setUser(User user) {
         this.user = user;
+
+        MessageHistory messageHistory = MessageHistoryModelHolder.INSTANCE.getModel().getMessageHistory(user);
+        chatMessagesTextArea.clear();
+        StringBuilder builder = new StringBuilder();
+        for (Message message : messageHistory.getMessageList()) {
+            builder.append(message.getSender().getName()).append(" (").append(message.getDate()).append("): ").append(message.getText()).append("\n");
+        }
+
+        chatMessagesTextArea.setText(builder.toString());
     }
 }

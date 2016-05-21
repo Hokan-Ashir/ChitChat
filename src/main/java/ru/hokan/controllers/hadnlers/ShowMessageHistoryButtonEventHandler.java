@@ -26,7 +26,12 @@ public class ShowMessageHistoryButtonEventHandler implements EventHandler<MouseE
         Parent root = ViewsHolder.INSTANCE.getView("messageHistory.fxml");
         Stage stage = new Stage();
         stage.setTitle(I18N.INSTANCE.getMessage("message.history.window.caption"));
-        Scene scene = new Scene(root, 450, 300);
+        Scene scene = root.getScene();
+        if (scene != null) {
+            stage.setScene(scene);
+        } else {
+            scene = new Scene(root, 450, 450);
+        }
         stage.setScene(scene);
         stage.show();
 
