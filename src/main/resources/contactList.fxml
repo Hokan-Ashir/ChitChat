@@ -1,37 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-
-<GridPane alignment="CENTER" hgap="10.0" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ru.hokan.Controller">
+<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" hgap="10.0" vgap="10.0"
+          xmlns="http://javafx.com/javafx/2.2" fx:controller="ru.hokan.controllers.ContactListController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
   </rowConstraints>
-  <Accordion GridPane.columnIndex="0" GridPane.rowIndex="0">
+  <Accordion fx:id="usersAccordion" GridPane.columnIndex="0" GridPane.rowIndex="0">
     <expandedPane>
-      <TitledPane fx:id="x1" animated="false" prefHeight="114.0" text="SomeUser">
+      <TitledPane id="x1" fx:id="userPanel" animated="false" prefHeight="114.0" text="SomeUser">
         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="114.0" prefWidth="201.0">
-          <ImageView fitHeight="37.62501525878906" fitWidth="50.16668701171875" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-              <Image url="@icons/user_online.png" />
-            </image>
+          <ImageView fx:id="userImage" fitHeight="37.62501525878906" fitWidth="50.16668701171875" layoutX="14.0"
+                     layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@icons/user_online.png"/>
           </ImageView>
-          <Button layoutX="71.0" layoutY="17.0" mnemonicParsing="false" text="Send Message" />
-          <Button layoutX="75.0" layoutY="54.0" mnemonicParsing="false" text="Show History" />
+          <Button fx:id="sendMessageButton" layoutX="71.0" layoutY="17.0" mnemonicParsing="false" text="Send Message"/>
+          <Button fx:id="showHistoryButton" layoutX="75.0" layoutY="54.0" mnemonicParsing="false" text="Show History"/>
         </AnchorPane>
       </TitledPane>
     </expandedPane>
     <panes>
-      <fx:reference source="x1" />
+      <fx:reference source="userPanel"/>
     </panes>
   </Accordion>
 </GridPane>

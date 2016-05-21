@@ -1,4 +1,4 @@
-package ru.hokan;
+package ru.hokan.util;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

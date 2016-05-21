@@ -5,10 +5,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ru.hokan.util.I18N;
 
 import java.util.Locale;
 
 public class Main extends Application {
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     /**
      * {@inheritDoc}
@@ -21,11 +26,6 @@ public class Main extends Application {
         primaryStage.setTitle(I18N.INSTANCE.getMessage("contact.list.window.caption"));
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
-    }
-
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }
 
